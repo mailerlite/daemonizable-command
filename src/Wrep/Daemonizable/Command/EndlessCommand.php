@@ -2,9 +2,11 @@
 
 namespace Wrep\Daemonizable\Command;
 
+use Symfony\Component\Console\Input\InputArgument;
 use Wrep\Daemonizable\Exception\ShutdownEndlessCommandException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -43,9 +45,9 @@ abstract class EndlessCommand extends Command
     }
 
     /**
-     * Configures the current command.
+     * Sets built in options for endless command
      */
-    protected function configure()
+    protected function getDefaultOptions()
     {
         // Option to run command once
         $this->addOption(
@@ -96,6 +98,9 @@ abstract class EndlessCommand extends Command
         // Force the creation of the synopsis before the merge with the app definition
         $this->getSynopsis();
 
+        // Load default options
+        $this->getDefaultOptions();
+
         // Add the signal handler
         if (function_exists('pcntl_signal')) {
             // Enable ticks for fast signal processing
@@ -144,7 +149,7 @@ abstract class EndlessCommand extends Command
             file_put_contents($pidFile, getmypid());
         }
 
-        $interval = $input->getArgument('interval');
+        $interval = $input->getOption('interval');
 
         if (null !== $interval) {
             $this->setTimeout($this->parseInterval($interval));
