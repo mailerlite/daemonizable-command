@@ -10,7 +10,7 @@ Because you want to create long running PHP/Symfony processes! For example to se
 ## How to install?
 Use composer to include it into your Symfony project:
 
-`composer require wrep/daemonizable-command`
+`composer require mailerlite/mailerlite-daemonizable-command`
 
 ### What version to use?
 Symfony did make some breaking changes, so you should make sure to use a compatible bundle version:
